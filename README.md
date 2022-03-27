@@ -9,4 +9,6 @@ A simple Go package helping fellow Tibians to calculate experience (or level, ba
 
 ---
 
-Example usage can be found at [pkg.go.dev](https://pkg.go.dev/github.com/marahin/tibialevellookup)
+Docs can be found at [pkg.go.dev](https://pkg.go.dev/github.com/marahin/tibialevellookup)
+
+Example usage can be found in [tests](tibia_level_lookup_suite_test.go#L34)
