@@ -35,7 +35,7 @@ func ExperienceToLevel(experience int) (int, error) {
 		return 0, errors.New("cannot use ExperienceToLevel() if expTable was not pregenerated - make sure GenerateExperienceTable() is called before calling ExperienceToLevel!")
 	}
 
-	for id, _ := range expTable {
+	for id := range expTable {
 		if expTable[id] <= experience && expTable[id+1] > experience {
 			return id, nil
 		}
