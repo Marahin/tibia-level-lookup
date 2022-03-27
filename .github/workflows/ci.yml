@@ -21,8 +21,8 @@ jobs:
       - name: Install dependencies
         run: make install-dependencies
 
-      # - name: Install ginkgo bin
-      #   run: go get github.com/onsi/ginkgo/v2/ginkgo
+      - name: Install ginkgo bin
+        run: go get github.com/onsi/ginkgo/v2/ginkgo
 
       - name: Run tests
         run: make test
