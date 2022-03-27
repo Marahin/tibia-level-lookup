@@ -32,7 +32,7 @@ func LevelToExperience(level int) int {
 // Returns an error if level is out of the table or expTable is nonexistent - see GenerateExperienceTable.
 func ExperienceToLevel(experience int) (int, error) {
 	if len(expTable) == 0 {
-		errors.New("cannot use ExperienceToLevel() if expTable was not pregenerated - make sure GenerateExperienceTable() is called before calling ExperienceToLevel!")
+		return 0, errors.New("cannot use ExperienceToLevel() if expTable was not pregenerated - make sure GenerateExperienceTable() is called before calling ExperienceToLevel!")
 	}
 
 	for id, _ := range expTable {
@@ -66,4 +66,9 @@ func GenerateExperienceTable(params ...int) {
 	}
 
 	expTable = tmpExpTable
+}
+
+// Replaces expTable with an empty integer array
+func ClearExpTable() {
+	expTable = make([]int, 0)
 }
