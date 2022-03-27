@@ -49,19 +49,37 @@ var _ = Describe("Level to experience", func() {
 })
 
 var _ = Describe("Experience to level", func() {
-	BeforeEach(func() {
+	It("throws an error if GenerateExperienceTable wasn't invoked", func() {
+		tibialevellookup.ClearExpTable()
+
+		_, err := tibialevellookup.ExperienceToLevel(16616800000)
+
+		Expect(err).NotTo(BeNil())
+		Expect(err.Error()).To(ContainSubstring("cannot use ExperienceToLevel() if expTable"))
+	})
+
+	It("throws an error if experience was not matched", func() {
 		tibialevellookup.GenerateExperienceTable()
+
+		_, err := tibialevellookup.ExperienceToLevel(-1)
+
+		Expect(err).NotTo(BeNil())
+		Expect(err.Error()).To(ContainSubstring("not matched - perhaps pass a higher number to GenerateExperienceTable"))
 	})
 
 	Context("experience contained within the Tibia.com level table", func() {
 		Context("exact number", func() {
 			It("returns proper level", func() {
+				tibialevellookup.GenerateExperienceTable()
+
 				Expect(tibialevellookup.ExperienceToLevel(16616800000)).To(Equal(1001))
 			})
 		})
 
 		Context("somewhere in betweeen", func() {
 			It("returns proper level", func() {
+				tibialevellookup.GenerateExperienceTable()
+
 				Expect(tibialevellookup.ExperienceToLevel(16626800000)).To(Equal(1001))
 			})
 		})
@@ -70,6 +88,8 @@ var _ = Describe("Experience to level", func() {
 	Context("experience outside the Tibia.com level table", func() {
 		It("returns a proper number", func() {
 			for level, realLifeExperience := range above2k {
+				tibialevellookup.GenerateExperienceTable()
+
 				Expect(tibialevellookup.ExperienceToLevel(realLifeExperience)).To(Equal(level))
 			}
 		})
