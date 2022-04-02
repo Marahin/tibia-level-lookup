@@ -14,14 +14,14 @@ func TestTibiaLevelLookup(t *testing.T) {
 	RunSpecs(t, "TibiaLevelLookup Suite")
 }
 
-var experienceTableLevels = map[int]uint64{
+var experienceTableLevels = map[int]uint{
 	44:   1238400,
 	501:  2070900000,
 	1001: 16616800000,
 	1631: 72046489000,
 }
 
-var above2k = map[int]uint64{
+var above2k = map[int]uint{
 	2062: 145814328084,
 	2059: 145183075916,
 	2004: 133780473475,
