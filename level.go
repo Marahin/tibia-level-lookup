@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-var expTable []int
+var expTable []uint64
 
 // Calculates approximate experience based on level.
 // The actual math formula has been taken from: https://tibia.fandom.com/wiki/Experience_Table
@@ -20,22 +20,26 @@ func formula(level float64) float64 {
 // Returns base required experience for a level.
 // Uses pregenerated expTable if there's one (see GenerateExperienceTable()),
 // otherwise falls back to the formula().
-func LevelToExperience(level int) int {
+func LevelToExperience(level int) uint64 {
 	if len(expTable) >= level {
 		return expTable[level]
 	} else {
-		return int(math.Floor(formula(float64(level))))
+		return uint64(math.Floor(formula(float64(level))))
 	}
 }
 
 // Returns approximate level based on experience - basing off of math formula for calculating experience for a level.
 // Returns an error if level is out of the table or expTable is nonexistent - see GenerateExperienceTable.
-func ExperienceToLevel(experience int) (int, error) {
+func ExperienceToLevel(experience uint64) (int, error) {
 	if len(expTable) == 0 {
-		return 0, errors.New("cannot use ExperienceToLevel() if expTable was not pregenerated - make sure GenerateExperienceTable() is called before calling ExperienceToLevel!")
+		return 0, errors.New("cannot use ExperienceToLevel() if expTable was not pregenerated - make sure GenerateExperienceTable() is called before calling ExperienceToLevel")
 	}
 
 	for id := range expTable {
+		if expTable[id] < experience && len(expTable)-1 == id {
+			break
+		}
+
 		if expTable[id] <= experience && expTable[id+1] > experience {
 			return id, nil
 		}
@@ -44,7 +48,7 @@ func ExperienceToLevel(experience int) (int, error) {
 	return 0, fmt.Errorf("experience %d not matched - perhaps pass a higher number to GenerateExperienceTable()", experience)
 }
 
-// Generates experience table up to the first passed integer argument. Default is 2500.
+// Generates experience table up to the first passed uint64eger argument. Default is 2500.
 // Required for ExperienceToLevel function to work.
 func GenerateExperienceTable(params ...int) {
 	var targetLevel int
@@ -59,7 +63,7 @@ func GenerateExperienceTable(params ...int) {
 		return
 	}
 
-	tmpExpTable := make([]int, targetLevel+1)
+	tmpExpTable := make([]uint64, targetLevel+1)
 
 	for k := 1; k < targetLevel+1; k++ {
 		tmpExpTable[k] = LevelToExperience(k)
@@ -68,7 +72,7 @@ func GenerateExperienceTable(params ...int) {
 	expTable = tmpExpTable
 }
 
-// Replaces expTable with an empty integer array
+// Replaces expTable with an empty uint64eger array
 func ClearExpTable() {
-	expTable = make([]int, 0)
+	expTable = make([]uint64, 0)
 }
